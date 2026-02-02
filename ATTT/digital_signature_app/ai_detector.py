@@ -48,10 +48,10 @@ def kiem_tra_metadata(file_path):
         }
     """
     try:
-        # Buoc 1: Mo anh
+        
         image = Image.open(file_path)
         
-        # Buoc 2: Doc EXIF data
+        
         exif_data = image.getexif()
         
         # Truong hop 1: Anh khong co EXIF (Binh thuong voi mot so anh)
@@ -62,16 +62,16 @@ def kiem_tra_metadata(file_path):
                 "chi_tiet": {}
             }
         
-        # Buoc 3: Chuyen EXIF thanh dictionary de doc
+        # Chuyen EXIF thanh dictionary de doc
         metadata = {}
         for tag_id, value in exif_data.items():
             tag_name = TAGS.get(tag_id, tag_id)  # Chuyen ID thanh ten (VD: 271 → "Make")
             metadata[tag_name] = str(value)
         
-        # Buoc 4: Kiem tra field "Software" (Phan mem da xu ly anh)
+        #  field "Software" 
         software = metadata.get("Software", "").lower()
         
-        # Danh sach phan mem chinh sua anh
+        
         phan_mem_chinh_sua = [
             "photoshop",    # Adobe Photoshop
             "gimp",         # GIMP
@@ -81,7 +81,7 @@ def kiem_tra_metadata(file_path):
             "affinity"      # Affinity Photo
         ]
         
-        # Buoc 5: Kiem tra co phan mem chinh sua nao khong
+        # Kiem tra phan mem chinh sua nao khong
         for tool in phan_mem_chinh_sua:
             if tool in software:
                 return {
@@ -90,7 +90,7 @@ def kiem_tra_metadata(file_path):
                     "chi_tiet": metadata
                 }
         
-        # Truong hop 2: Co EXIF nhung khong phat hien chinh sua
+        # Co EXIF nhung khong phat hien chinh sua
         return {
             "hop_le": True,
             "ly_do": "Khong phat hien dau hieu chinh sua",
