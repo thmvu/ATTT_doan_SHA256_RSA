@@ -45,6 +45,35 @@
                     </a>
                 </div>
                 {% endif %}
+                {% endif %}
+                
+                <!-- Hien thi QR Code -->
+                {% if qr_file %}
+                <div class="qr-container">
+                    <h3>📱 Quét Mã QR Xác Thực</h3>
+                    <img src="{{ url_for('route_tai_qr', filename=qr_file) }}" alt="QR Code">
+                    <br>
+                    <a href="{{ url_for('route_tai_qr', filename=qr_file) }}" class="download-link" style="margin-top: 10px; display: inline-block;">
+                        ⬇️ Tải Mã QR
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Hien thi Ket Qua AI Check -->
+                {% if ai_result %}
+                <div class="ai-result {{ 'success' if ai_result.hop_le else 'warning' }}">
+                    {% if ai_result.hop_le %}
+                        <span>✅ <b>AI Check PASS:</b> {{ ai_result.ly_do }}</span>
+                    {% else %}
+                        <span>⚠️ <b>AI Check WARNING:</b> {{ ai_result.ly_do }}</span>
+                        {% if ai_result.chi_tiet %}
+                        <div style="font-size: 0.8rem; margin-top: 5px; opacity: 0.9;">
+                            Phần mềm: {{ ai_result.chi_tiet.get('Software', 'Unknown') }}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
             {% endif %}
 
@@ -70,6 +99,15 @@
                     <small style="color: #888; font-size: 0.85rem; margin-top: -0.5rem;">
                         Để trống nếu dùng khóa chung trên server
                     </small>
+
+                    <!-- Checkbox AI Check -->
+                    <div class="checkbox-wrapper">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="ai_check" value="true">
+                            <span class="checkmark"></span>
+                            🤖 Kích hoạt AI Check (Phát hiện ảnh giả mạo)
+                        </label>
+                    </div>
 
                     <button type="submit" class="sign-btn">Ký File Ngay</button>
                 </form>

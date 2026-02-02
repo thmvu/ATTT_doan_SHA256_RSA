@@ -41,10 +41,10 @@ body {
 }
 
 header {
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
     padding: 2rem;
     text-align: center;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 header h1 {
@@ -71,14 +71,14 @@ main {
     background: #fff;
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card h2 {
@@ -172,8 +172,15 @@ button:active {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 footer {
@@ -181,16 +188,26 @@ footer {
     padding: 1.5rem;
     color: var(--text-muted);
     font-size: 0.85rem;
-    background: rgba(255,255,255,0.8);
-    border-top: 1px solid rgba(0,0,0,0.05);
+    background: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* Specific button styles */
-.sign-btn { background: #10b981; }
-.sign-btn:hover { background: #059669; }
+.sign-btn {
+    background: #10b981;
+}
 
-.verify-btn { background: #f59e0b; }
-.verify-btn:hover { background: #d97706; }
+.sign-btn:hover {
+    background: #059669;
+}
+
+.verify-btn {
+    background: #f59e0b;
+}
+
+.verify-btn:hover {
+    background: #d97706;
+}
 
 .download-link {
     display: inline-block;
@@ -200,4 +217,80 @@ footer {
     font-weight: 600;
     font-size: 0.9rem;
 }
-.download-link:hover { text-decoration: underline; }
+
+.download-link:hover {
+    text-decoration: underline;
+}
+
+/* ====== QR CODE STYLES ====== */
+.qr-container {
+    text-align: center;
+    background: #ffffff;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.qr-container h3 {
+    font-size: 1.1rem;
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+.qr-container img {
+    max-width: 250px;
+    border-radius: 8px;
+    border: 2px solid #f3f4f6;
+    padding: 10px;
+    background: white;
+}
+
+/* ====== AI RESULT STYLES ====== */
+.ai-result {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    border-left: 5px solid;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.ai-result.success {
+    background-color: #ecfdf5;
+    border-color: #10b981;
+    color: #065f46;
+}
+
+.ai-result.warning {
+    background-color: #fffbeb;
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+/* ====== CHECKBOX STYLES ====== */
+.checkbox-wrapper {
+    margin: 1.5rem 0;
+    padding: 10px;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px dashed #cbd5e1;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #475569;
+    user-select: none;
+}
+
+.checkbox-container input {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #4f46e5;
+}
