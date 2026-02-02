@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Substitution Cipher</title>
+    <link rel="stylesheet" href="substitution.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h2>🔐 Substitution Cipher Demo</h2>
+
+    <!-- INPUT TEXT -->
+    <div class="row">
+        <label>Input Text (Plain OR Cipher):</label>
+        <textarea id="plain"></textarea>
+    </div>
+
+    <!-- KEY INPUT -->
+    <div class="row">
+        <label>Enter Key (26 Letters):</label>
+        <input id="keyInput" type="text" placeholder="Example: QWERTYUIOPASDFGHJKLZXCVBNM">
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="row">
+        <button onclick="generateKey()">Generate Random Key</button>
+        <button onclick="applyKey()">Apply Key</button>
+        <button onclick="encrypt()">Encrypt</button>
+        <button onclick="decrypt()">Decrypt</button>
+    </div>
+
+    <!-- SHOW KEY -->
+    <div class="row">
+        <label>Key Table:</label>
+        <div class="key-box">
+            PLAIN : <span id="plainKey"></span><br>
+            CIPHER: <span id="cipherKey"></span>
+        </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="row">
+        <label>Result:</label>
+        <textarea id="result"></textarea>
+    </div>
+
+</div>
+
+<script src="substitution.js"></script>
+</body>
+</html>

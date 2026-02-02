@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affine Cipher Tool</title>
+    <link rel="stylesheet" href="affine.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">🔐 CryptoTool</div>
+        <ul class="menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Theory</a></li>
+            <li><a href="#">Practice</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="card">
+        <h1>Affine Cipher</h1>
+        <p class="desc">Encrypt & Decrypt text using Affine Cipher</p>
+
+        <label>Input Text</label>
+        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+
+        <label>Or upload .txt file</label>
+        <input type="file" id="fileInput" accept=".txt">
+
+        <div class="key-box">
+            <div>
+                <label>Multiplier (a)</label>
+                <input type="number" id="a" placeholder="e.g. 5">
+            </div>
+            <div>
+                <label>Shift (b)</label>
+                <input type="number" id="b" placeholder="e.g. 8">
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="encrypt" onclick="encrypt()">Encrypt</button>
+            <button class="decrypt" onclick="decrypt()">Decrypt</button>
+        </div>
+
+        <label>Output</label>
+        <textarea id="outputText" placeholder="Result..."></textarea>
+
+        <button class="download" onclick="downloadFile()">⬇ Download Result</button>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 - Information Security Project</p>
+</footer>
+
+<script src="affine.js"></script>
+</body>
+</html>
+    

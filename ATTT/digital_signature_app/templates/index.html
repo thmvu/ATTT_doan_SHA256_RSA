@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Chữ Ký Số An Toàn</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Favicon Hiện Đại -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Hệ Thống Chữ Ký Số</h1>
+            <p>Thực Thi Mã Hóa RSA & Hàm Băm SHA-256</p>
+        </header>
+
+        <main>
+
+            <!-- Thông Báo -->
+            {% if message %}
+            <div class="message-box {{ message_type }}">
+                {{ message }}
+
+                {% if signature_file %}
+                <br>
+                <a href="{{ url_for('route_tai_chu_ky', filename=signature_file) }}" class="download-link"
+                    target="_blank">⬇️ Tải Về File Chữ Ký (.sig)</a>
+                {% endif %}
+
+                {% if private_key_file %}
+                <br><br>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('route_tai_khoa', filename=private_key_file) }}" class="download-link"
+                        style="color: #ef4444; border-color: #ef4444;">
+                        ⬇️ Tải Private Key (Bí Mật)
+                    </a>
+                    <a href="{{ url_for('route_tai_khoa', filename=public_key_file) }}" class="download-link"
+                        style="color: #4f46e5; border-color: #4f46e5;">
+                        ⬇️ Tải Public Key (Công Khai)
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Card 1: Tạo Khóa -->
+            <div class="card">
+                <h2><span>🔑</span> Tạo Bộ Khóa (Generate Keys)</h2>
+                <p style="margin-bottom: 1rem; font-size: 0.9rem; color: #666;">Tạo cặp khóa Public/Private RSA mới. Lưu
+                    ý: Sẽ ghi đè lên khóa cũ nếu đã tồn tại.</p>
+                <form action="/tao_khoa" method="post">
+                    <button type="submit" class="btn-secondary">Tạo Cặp Khóa Mới</button>
+                </form>
+            </div>
+
+            <!-- Card 2: Ký File -->
+            <div class="card">
+                <h2><span>✍️</span> Ký Văn Bản (Sign Document)</h2>
+                <form action="/ky_file" method="post" enctype="multipart/form-data">
+                    <label>Chọn File Cần Ký:</label>
+                    <input type="file" name="file" required>
+
+                    <label>Private Key Riêng (Tùy Chọn):</label>
+                    <input type="file" name="private_key" accept=".pem">
+                    <small style="color: #888; font-size: 0.85rem; margin-top: -0.5rem;">
+                        Để trống nếu dùng khóa chung trên server
+                    </small>
+
+                    <button type="submit" class="sign-btn">Ký File Ngay</button>
+                </form>
+            </div>
+
+            <!-- Card 3: Kiểm Tra File -->
+            <div class="card">
+                <h2><span>🛡️</span> Kiểm Tra Toàn Vẹn (Verify)</h2>
+                <form action="/kiem_tra" method="post" enctype="multipart/form-data">
+                    <label>File Gốc Cần Kiểm Tra:</label>
+                    <input type="file" name="file" required>
+
+                    <label>File Chữ Ký (.sig):</label>
+                    <input type="file" name="signature" required accept=".sig">
+
+                    <button type="submit" class="verify-btn">Xác Thực File</button>
+                </form>
+            </div>
+
+        </main>
+
+        <footer>
+            Phát triển bởi Antigravity • Bảo Mật & An Toàn Thông Tin
+        </footer>
+    </div>
+
+</body>
+
+</html>

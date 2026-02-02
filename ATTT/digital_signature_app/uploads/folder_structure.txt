@@ -1,0 +1,274 @@
+cinema-booking/
+│
+├── app/
+│   ├── Console/
+│   │   ├── Commands/
+│   │   │   └── ReleaseExpiredSeats.php
+│   │   └── Kernel.php
+│   │
+│   ├── Exceptions/
+│   │   └── Handler.php
+│   │
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Api/
+│   │   │   │   ├── AuthController.php
+│   │   │   │   ├── MovieController.php
+│   │   │   │   ├── ShowtimeController.php
+│   │   │   │   ├── BookingController.php          ✅ ĐÃ CÓ
+│   │   │   │   ├── PaymentController.php
+│   │   │   │   ├── TicketController.php
+│   │   │   │   │
+│   │   │   │   └── Admin/                         ❌ CHƯA CÓ - CẦN LÀM
+│   │   │   │       ├── DashboardController.php    ❌ CHƯA
+│   │   │   │       ├── AdminMovieController.php   ❌ CHƯA
+│   │   │   │       ├── AdminShowtimeController.php ❌ CHƯA
+│   │   │   │       ├── CinemaController.php       ❌ CHƯA
+│   │   │   │       ├── RoomController.php         ❌ CHƯA
+│   │   │   │       ├── SeatController.php         ❌ CHƯA
+│   │   │   │       ├── OrderController.php        ❌ CHƯA
+│   │   │   │       └── StatisticController.php    ❌ CHƯA
+│   │   │   │
+│   │   │   └── Web/                               ❌ CHƯA CÓ (nếu làm Blade)
+│   │   │       ├── HomeController.php
+│   │   │       ├── MovieController.php
+│   │   │       └── Admin/
+│   │   │           └── AdminDashboardController.php
+│   │   │
+│   │   ├── Middleware/
+│   │   │   ├── Authenticate.php
+│   │   │   ├── CheckRole.php                      ✅ ĐÃ CÓ
+│   │   │   └── EnsureEmailIsVerified.php
+│   │   │
+│   │   ├── Requests/
+│   │   │   ├── Auth/
+│   │   │   │   ├── LoginRequest.php
+│   │   │   │   └── RegisterRequest.php
+│   │   │   ├── Movie/
+│   │   │   │   ├── StoreMovieRequest.php
+│   │   │   │   └── UpdateMovieRequest.php
+│   │   │   ├── Showtime/
+│   │   │   │   └── StoreShowtimeRequest.php
+│   │   │   └── Booking/
+│   │   │       └── HoldSeatsRequest.php
+│   │   │
+│   │   └── Resources/
+│   │       ├── MovieResource.php
+│   │       ├── ShowtimeResource.php
+│   │       ├── OrderResource.php
+│   │       └── TicketResource.php
+│   │
+│   ├── Models/
+│   │   ├── User.php                               ✅ ĐÃ CÓ
+│   │   ├── Movie.php                              ✅ ĐÃ CÓ
+│   │   ├── Cinema.php                             ✅ ĐÃ CÓ
+│   │   ├── Room.php                               ✅ ĐÃ CÓ
+│   │   ├── Seat.php                               ✅ ĐÃ CÓ
+│   │   ├── Showtime.php                           ✅ ĐÃ CÓ
+│   │   ├── ShowtimeSeat.php                       ✅ ĐÃ CÓ
+│   │   ├── Order.php                              ✅ ĐÃ CÓ
+│   │   ├── OrderDetail.php                        ✅ ĐÃ CÓ
+│   │   ├── Ticket.php                             ✅ ĐÃ CÓ
+│   │   └── Payment.php                            ⚠️ CHƯA DEFINE
+│   │
+│   ├── Services/
+│   │   ├── SeatBookingService.php                 ✅ ĐÃ CÓ
+│   │   ├── PaymentService.php                     ✅ ĐÃ CÓ
+│   │   ├── MovieService.php                       ❌ CHƯA
+│   │   ├── ShowtimeService.php                    ❌ CHƯA
+│   │   ├── StatisticService.php                   ❌ CHƯA (cho Admin)
+│   │   └── QRCodeService.php                      ❌ CHƯA
+│   │
+│   ├── Repositories/                              ❌ CHƯA (Optional - nếu dùng pattern)
+│   │   ├── MovieRepository.php
+│   │   ├── ShowtimeRepository.php
+│   │   └── OrderRepository.php
+│   │
+│   ├── Policies/                                  ❌ CHƯA
+│   │   ├── MoviePolicy.php
+│   │   ├── OrderPolicy.php
+│   │   └── TicketPolicy.php
+│   │
+│   └── Helpers/
+│       └── helpers.php
+│
+├── bootstrap/
+│   ├── app.php
+│   └── cache/
+│
+├── config/
+│   ├── app.php
+│   ├── auth.php
+│   ├── database.php
+│   ├── sanctum.php
+│   └── payment.php                                ✅ ĐÃ CÓ
+│
+├── database/
+│   ├── factories/
+│   │   ├── UserFactory.php
+│   │   ├── MovieFactory.php                       ❌ CHƯA
+│   │   └── ShowtimeFactory.php                    ❌ CHƯA
+│   │
+│   ├── migrations/
+│   │   ├── 2024_01_01_000001_create_cinemas_table.php        ✅ ĐÃ CÓ
+│   │   ├── 2024_01_01_000002_create_movies_table.php         ✅ ĐÃ CÓ
+│   │   ├── 2024_01_01_000003_create_rooms_table.php          ✅ ĐÃ CÓ
+│   │   ├── 2024_01_01_000004_create_seats_table.php          ✅ ĐÃ CÓ
+│   │   ├── 2024_01_01_000005_create_showtimes_table.php      ✅ ĐÃ CÓ
+│   │   ├── 2024_01_01_000006_create_showtime_seats_table.php ✅ ĐÃ CÓ
+│   │   ├── 2024_01_01_000007_create_orders_table.php         ✅ ĐÃ CÓ
+│   │   ├── 2024_01_01_000008_create_order_details_table.php  ✅ ĐÃ CÓ
+│   │   ├── 2024_01_01_000009_create_tickets_table.php        ✅ ĐÃ CÓ
+│   │   └── 2024_01_01_000010_add_role_to_users_table.php     ✅ ĐÃ CÓ
+│   │
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       ├── UserSeeder.php                         ❌ CHƯA
+│       ├── CinemaSeeder.php                       ❌ CHƯA
+│       ├── MovieSeeder.php                        ❌ CHƯA
+│       └── ShowtimeSeeder.php                     ❌ CHƯA
+│
+├── public/
+│   ├── index.php
+│   ├── css/
+│   ├── js/
+│   └── uploads/
+│       ├── movies/
+│       │   ├── posters/
+│       │   └── banners/
+│       └── qrcodes/
+│
+├── resources/
+│   ├── views/                                     ❌ CHƯA (nếu dùng Blade)
+│   │   ├── layouts/
+│   │   │   ├── app.blade.php
+│   │   │   └── admin.blade.php
+│   │   ├── admin/
+│   │   │   ├── dashboard.blade.php
+│   │   │   ├── movies/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   └── edit.blade.php
+│   │   │   └── orders/
+│   │   │       └── index.blade.php
+│   │   └── user/
+│   │       ├── home.blade.php
+│   │       └── tickets.blade.php
+│   │
+│   ├── js/                                        ❌ CHƯA (nếu dùng React/Vue)
+│   │   ├── components/
+│   │   │   ├── MovieCard.jsx
+│   │   │   ├── SeatMap.jsx
+│   │   │   └── TicketQR.jsx
+│   │   └── app.js
+│   │
+│   └── css/
+│       └── app.css
+│
+├── routes/
+│   ├── api.php                                    ✅ ĐÃ CÓ (nhưng admin routes chưa có controller)
+│   ├── web.php                                    ❌ CHƯA
+│   └── console.php
+│
+├── storage/
+│   ├── app/
+│   │   ├── public/
+│   │   │   ├── movies/
+│   │   │   └── qrcodes/
+│   │   └── private/
+│   ├── framework/
+│   └── logs/
+│
+├── tests/
+│   ├── Feature/
+│   │   ├── Auth/
+│   │   │   └── AuthenticationTest.php
+│   │   ├── Booking/
+│   │   │   ├── SeatBookingTest.php               ❌ CHƯA
+│   │   │   └── PaymentTest.php                   ❌ CHƯA
+│   │   └── Admin/
+│   │       └── MovieManagementTest.php           ❌ CHƯA
+│   │
+│   └── Unit/
+│       ├── Services/
+│       │   └── SeatBookingServiceTest.php        ❌ CHƯA
+│       └── Models/
+│           └── ShowtimeTest.php                  ❌ CHƯA
+│
+├── .env                                           ⚠️ CẦN CONFIG
+├── .env.example
+├── composer.json
+├── package.json                                   ❌ CHƯA (nếu dùng frontend)
+├── artisan
+└── README.md
+
+
+═══════════════════════════════════════════════════════════════
+                    PHÂN TÍCH TÌNH TRẠNG
+═══════════════════════════════════════════════════════════════
+
+✅ ĐÃ CÓ (PHẦN USER):
+├─ Database schema (SQL + Migrations)
+├─ Models với relationships
+├─ SeatBookingService (Core logic)
+├─ PaymentService (VNPay)
+├─ BookingController API
+├─ API Routes
+├─ Middleware Role
+└─ Cron Jobs
+
+❌ CHƯA CÓ (PHẦN ADMIN):
+├─ Admin Controllers (8 controllers)
+│   ├── DashboardController        → Thống kê tổng quan
+│   ├── AdminMovieController       → CRUD phim
+│   ├── AdminShowtimeController    → CRUD lịch chiếu
+│   ├── CinemaController           → CRUD rạp
+│   ├── RoomController             → CRUD phòng + ghế
+│   ├── SeatController             → Quản lý ghế
+│   ├── OrderController            → Xem/refund đơn hàng
+│   └── StatisticController        → Báo cáo doanh thu
+│
+├─ Admin Services
+│   ├── MovieService
+│   ├── ShowtimeService
+│   └── StatisticService
+│
+├─ Admin Views (Blade hoặc React)
+│   ├── Dashboard
+│   ├── Movie Management
+│   ├── Showtime Management
+│   └── Order Management
+│
+├─ Form Requests (Validation)
+├─ API Resources (Transform data)
+├─ Seeders (Sample data)
+└─ Tests
+
+═══════════════════════════════════════════════════════════════
+                    CÁC FILE CẦN BỔ SUNG
+═══════════════════════════════════════════════════════════════
+
+PRIORITY 1 - ADMIN CORE:
+[1] app/Http/Controllers/Api/Admin/DashboardController.php
+[2] app/Http/Controllers/Api/Admin/AdminMovieController.php
+[3] app/Http/Controllers/Api/Admin/AdminShowtimeController.php
+[4] app/Http/Controllers/Api/Admin/OrderController.php
+[5] app/Services/StatisticService.php
+
+PRIORITY 2 - CINEMA/ROOM MANAGEMENT:
+[6] app/Http/Controllers/Api/Admin/CinemaController.php
+[7] app/Http/Controllers/Api/Admin/RoomController.php
+[8] app/Services/MovieService.php
+[9] app/Services/ShowtimeService.php
+
+PRIORITY 3 - SUPPORT FILES:
+[10] app/Http/Requests/* (Validation)
+[11] app/Http/Resources/* (API Transform)
+[12] database/seeders/* (Sample data)
+
+PRIORITY 4 - FRONTEND (Optional):
+[13] resources/views/admin/* (Blade)
+      HOẶC
+      resources/js/components/* (React/Vue)
+
+═══════════════════════════════════════════════════════════════

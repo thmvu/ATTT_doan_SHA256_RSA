@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Affine Cipher Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* ===== NAVBAR ===== */
+        header {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar {
+            max-width: 1100px;
+            margin: auto;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== MAIN CARD ===== */
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: #fff;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .card h1 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .desc {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* ===== FORM ===== */
+        label {
+            font-weight: 600;
+            margin: 10px 0 5px;
+            display: block;
+        }
+
+        textarea, input[type="number"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .key-box {
+            display: flex;
+            gap: 15px;
+        }
+
+        .key-box div {
+            flex: 1;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .encrypt {
+            background: #4CAF50;
+            color: #fff;
+            flex: 1;
+        }
+
+        .encrypt:hover {
+            background: #43a047;
+        }
+
+        .decrypt {
+            background: #f39c12;
+            color: #fff;
+            flex: 1;
+        }
+
+        .decrypt:hover {
+            background: #e67e22;
+        }
+
+        .download {
+            width: 100%;
+            background: #3498db;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .download:hover {
+            background: #2980b9;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            color: #eee;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">🔐 CryptoTool</div>
+        <ul class="menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Theory</a></li>
+            <li><a href="#">Practice</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="card">
+        <h1>Affine Cipher</h1>
+        <p class="desc">Encrypt & Decrypt text using Affine Cipher</p>
+
+        <label>Input Text</label>
+        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+
+        <label>Or upload .txt file</label>
+        <input type="file" id="fileInput" accept=".txt">
+
+        <div class="key-box">
+            <div>
+                <label>Multiplier (a)</label>
+                <input type="number" id="a" placeholder="e.g. 5">
+            </div>
+            <div>
+                <label>Shift (b)</label>
+                <input type="number" id="b" placeholder="e.g. 8">
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="encrypt" onclick="encrypt()">Encrypt</button>
+            <button class="decrypt" onclick="decrypt()">Decrypt</button>
+        </div>
+
+        <label>Output</label>
+        <textarea id="outputText" placeholder="Result..."></textarea>
+
+        <button class="download" onclick="downloadFile()">⬇ Download Result</button>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 - Information Security Project</p>
+</footer>
+
+<script>
+    function encrypt() {
+        let text = document.getElementById("inputText").value;
+        let a = parseInt(document.getElementById("a").value);
+        let b = parseInt(document.getElementById("b").value);
+
+        if (isNaN(a) || isNaN(b)) {
+            alert("Please enter a and b");
+            return;
+        }
+
+        let result = "";
+
+        for (let char of text) {
+            if (char >= 'A' && char <= 'Z') {
+                let x = char.charCodeAt(0) - 65;
+                let y = (a * x + b) % 26;
+                result += String.fromCharCode(y + 65);
+            } else if (char >= 'a' && char <= 'z') {
+                let x = char.charCodeAt(0) - 97;
+                let y = (a * x + b) % 26;
+                result += String.fromCharCode(y + 97);
+            } else {
+                result += char;
+            }
+        }
+
+        document.getElementById("outputText").value = result;
+    }
+
+    function modInverse(a, m) {
+        a = a % m;
+        for (let x = 1; x < m; x++) {
+            if ((a * x) % m === 1) return x;
+        }
+        return null;
+    }
+
+    function decrypt() {
+        let text = document.getElementById("inputText").value;
+        let a = parseInt(document.getElementById("a").value);
+        let b = parseInt(document.getElementById("b").value);
+
+        if (isNaN(a) || isNaN(b)) {
+            alert("Please enter a and b");
+            return;
+        }
+
+        let a_inv = modInverse(a, 26);
+        if (a_inv === null) {
+            alert("Multiplicative inverse for a does not exist!");
+            return;
+        }
+
+        let result = "";
+
+        for (let char of text) {
+            if (char >= 'A' && char <= 'Z') {
+                let y = char.charCodeAt(0) - 65;
+                let x = (a_inv * (y - b + 26)) % 26;
+                result += String.fromCharCode(x + 65);
+            } else if (char >= 'a' && char <= 'z') {
+                let y = char.charCodeAt(0) - 97;
+                let x = (a_inv * (y - b + 26)) % 26;
+                result += String.fromCharCode(x + 97);
+            } else {
+                result += char;
+            }
+        }
+
+        document.getElementById("outputText").value = result;
+    }
+
+    document.getElementById("fileInput").addEventListener("change", function () {
+        let file = this.files[0];
+        if (!file) return;
+
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("inputText").value = e.target.result;
+        };
+        reader.readAsText(file);
+    });
+
+    function downloadFile() {
+        let text = document.getElementById("outputText").value;
+        let blob = new Blob([text], { type: "text/plain" });
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "affine_result.txt";
+        a.click();
+    }
+</script>
+
+</body>
+</html>

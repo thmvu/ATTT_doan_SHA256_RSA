@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Demo ham Bam MD5</h1>
+        <label for="">Nhap du lieu</label>
+        <textarea name="inputText" id="inputText" placeholder="Nhap doan van muon bam"></textarea>
+        <label for="">Hoac chon file muon bam</label>
+        <input type="file" id="fileInput">
+
+        <button onclick="generateMD5()">Tao MD5</button>
+
+        <label for="">Ket qua MD5</label>
+        <input type="text" id="outputHash" readonly>
+        <p class="note">
+            ⚠ MD5 KHÔNG an toàn cho mật khẩu hoặc chữ ký số. Chỉ dùng cho kiểm tra toàn vẹn dữ liệu.
+        </p>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

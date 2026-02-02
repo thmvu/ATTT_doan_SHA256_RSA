@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Vigenère Cipher</title>
+    <link rel="stylesheet" href="vigenere.css">
+</head>
+<body>
+
+<header class="rong">
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="rong">
+    <div class="madich">
+        <h1>Tạo mã Vigenère</h1>
+
+        <textarea id="inputText" placeholder="Nhập văn bản..."></textarea>
+
+        <input type="text" id="key" placeholder="Nhập khóa (VD: KEY)">
+
+        <button onclick="maHoa()">Mã hóa</button>
+        <button onclick="giaiMa()">Giải mã</button>
+
+        <textarea id="outputText" placeholder="Kết quả..."></textarea>
+
+        <button onclick="taiFile()">Tải file kết quả</button>
+    </div>
+</section>
+
+<script src="vigenere.js"></script>
+</body>
+</html>

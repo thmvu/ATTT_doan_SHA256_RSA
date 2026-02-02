@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Mã dịch vòng</title>
+    <link rel="stylesheet" href="madichvong.css">
+</head>
+<body>
+
+<header class="rong">
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="rong">
+    <div class="madich">
+        <h1>Tạo mã dịch vòng (Caesar Cipher)</h1>
+
+        <textarea id="inputText" placeholder="Nhập mã..."></textarea>
+        <input type="file" id="fileInput" accept=".txt">
+
+        <input type="number" id="shift" placeholder="Nhập số dịch vòng">
+
+        <button onclick="maHoa()">Mã hóa</button>
+        <button onclick="giaiMa()">Giải mã</button>
+
+        <textarea id="outputText" placeholder="Kết quả..."></textarea>
+        <button onclick="taiFile()">Tải file kết quả</button>
+    </div>
+</section>
+
+<script src="madichvong.js"></script>
+</body>
+</html>

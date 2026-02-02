@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>RSA Encryption Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🔐 RSA Encryption Demo</h1>
+
+    <!-- KEY GENERATION -->
+    <div class="card">
+        <h2>1. Tạo khóa RSA</h2>
+
+        <button onclick="generateKeys()">Generate Keys</button>
+
+        <p><b>Prime p:</b> <span id="pVal"></span></p>
+        <p><b>Prime q:</b> <span id="qVal"></span></p>
+
+        <p><b>Public Key (n, e):</b></p>
+        <div id="publicKey" class="box"></div>
+
+        <p><b>Private Key (n, d):</b></p>
+        <div id="privateKey" class="box"></div>
+    </div>
+
+    <!-- ENCRYPT -->
+    <div class="card">
+        <h2>2. Mã hóa</h2>
+
+        <input type="text" id="plainText" placeholder="Nhập nội dung cần mã hóa">
+
+        <button onclick="encrypt()">Encrypt</button>
+
+        <p><b>Cipher Text:</b></p>
+        <div id="cipherText" class="box"></div>
+    </div>
+
+    <!-- DECRYPT -->
+    <div class="card">
+        <h2>3. Giải mã</h2>
+
+        <button onclick="decrypt()">Decrypt</button>
+
+        <p><b>Decrypted Text:</b></p>
+        <div id="decryptedText" class="box"></div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

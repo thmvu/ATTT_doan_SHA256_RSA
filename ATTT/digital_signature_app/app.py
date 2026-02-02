@@ -1,0 +1,185 @@
+from flask import Flask, render_template, request, send_file
+import os
+import rsa_library  # Thu vien RSA tu viet (Code thuan)
+
+app = Flask(__name__)
+
+# Cau hinh thu muc
+UPLOAD_FOLDER = 'uploads'
+SIGN_FOLDER = 'signatures'
+KEY_FOLDER = 'keys'
+
+# Dam bao thu muc ton tai
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(SIGN_FOLDER, exist_ok=True)
+os.makedirs(KEY_FOLDER, exist_ok=True)
+
+# Ten file khoa
+TEN_FILE_KHOA_BI_MAT = "private_key.pem"
+TEN_FILE_KHOA_CONG_KHAI = "public_key.pem"
+
+DUONG_DAN_KHOA_BI_MAT = os.path.join(KEY_FOLDER, TEN_FILE_KHOA_BI_MAT)
+DUONG_DAN_KHOA_CONG_KHAI = os.path.join(KEY_FOLDER, TEN_FILE_KHOA_CONG_KHAI)
+
+# ================= TAO KHOA RSA =================
+def xu_ly_tao_khoa():
+    # Su dung thu vien tu viet
+    # 1024 bit (Hoac 512 neu may cham)
+    cap_khoa = rsa_library.tao_cap_khoa_rsa(1024)
+    khoa_cong_khai, khoa_bi_mat = cap_khoa
+    
+    # Luu khoa vao file
+    rsa_library.luu_khoa(khoa_bi_mat, DUONG_DAN_KHOA_BI_MAT, la_khoa_bi_mat=True)
+    rsa_library.luu_khoa(khoa_cong_khai, DUONG_DAN_KHOA_CONG_KHAI, la_khoa_bi_mat=False)
+
+# ================= KY FILE =================
+def xu_ly_ky_file(duong_dan_file, duong_dan_khoa_rieng=None):
+    # Doc Khoa Bi Mat (Tu file rieng hoac khoa chung tren server)
+    try:
+        if duong_dan_khoa_rieng:
+            # Nguoi dung upload khoa rieng
+            khoa_bi_mat = rsa_library.doc_khoa(duong_dan_khoa_rieng)
+        else:
+            # Dung khoa chung tren server (Mac dinh)
+            khoa_bi_mat = rsa_library.doc_khoa(DUONG_DAN_KHOA_BI_MAT)
+    except Exception as e:
+        raise Exception(f"Khong the doc khoa: {e}")
+
+    # Doc du lieu file
+    with open(duong_dan_file, "rb") as f:
+        du_lieu = f.read()
+
+    # Thuc hien ky
+    chu_ky_hex = rsa_library.ky_so_rsa(du_lieu, khoa_bi_mat)
+
+    # Luu chu ky
+    ten_file = os.path.basename(duong_dan_file)
+    ten_file_chu_ky = f"{ten_file}.sig"
+    duong_dan_chu_ky = os.path.join(SIGN_FOLDER, ten_file_chu_ky)
+
+    with open(duong_dan_chu_ky, "w") as f:
+        f.write(chu_ky_hex)
+
+    return duong_dan_chu_ky
+
+# ================= XAC THUC FILE =================
+def xu_ly_xac_thuc(duong_dan_file, duong_dan_chu_ky):
+    # Doc Khoa Cong Khai
+    try:
+        khoa_cong_khai = rsa_library.doc_khoa(DUONG_DAN_KHOA_CONG_KHAI)
+    except Exception:
+        return False
+
+    # Doc du lieu file
+    with open(duong_dan_file, "rb") as f:
+        du_lieu = f.read()
+
+    # Doc chu ky
+    with open(duong_dan_chu_ky, "r") as f:
+        chu_ky_hex = f.read().strip()
+
+    # Xac thuc
+    return rsa_library.xac_thuc_chu_ky(du_lieu, chu_ky_hex, khoa_cong_khai)
+
+# ================= ROUTES (DUONG DAN) =================
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/tao_khoa', methods=['POST'])
+def route_tao_khoa():
+    try:
+        xu_ly_tao_khoa()
+        return render_template('index.html', 
+                               message="✅ Da Tao Cap Khoa RSA (Code Thuan) Thanh Cong!", 
+                               message_type="success",
+                               private_key_file=TEN_FILE_KHOA_BI_MAT,
+                               public_key_file=TEN_FILE_KHOA_CONG_KHAI)
+    except Exception as e:
+        return render_template('index.html', message=f"❌ Loi: {str(e)}", message_type="error")
+
+@app.route('/ky_file', methods=['POST'])
+def route_ky_file():
+    if 'file' not in request.files:
+        return render_template('index.html', message="❌ Khong co file nao duoc gui", message_type="error")
+    
+    file = request.files['file']
+    if file.filename == '':
+        return render_template('index.html', message="❌ Chua chon file", message_type="error")
+
+    if file:
+        try:
+            duong_dan_file = os.path.join(UPLOAD_FOLDER, file.filename)
+            file.save(duong_dan_file)
+
+            # Kiem tra xem user co upload Private Key rieng khong
+            duong_dan_khoa_rieng = None
+            if 'private_key' in request.files and request.files['private_key'].filename != '':
+                # User upload Private Key rieng
+                private_key_file = request.files['private_key']
+                duong_dan_khoa_rieng = os.path.join(UPLOAD_FOLDER, f"temp_{private_key_file.filename}")
+                private_key_file.save(duong_dan_khoa_rieng)
+            else:
+                # Dung khoa chung - kiem tra ton tai
+                if not os.path.exists(DUONG_DAN_KHOA_BI_MAT):
+                    return render_template('index.html', message="❌ Bao mat: Khong tim thay Khoa Bi Mat!", message_type="error")
+
+            duong_dan_chu_ky = xu_ly_ky_file(duong_dan_file, duong_dan_khoa_rieng)
+            
+            # Xoa Private Key tam thoi neu co
+            if duong_dan_khoa_rieng and os.path.exists(duong_dan_khoa_rieng):
+                os.remove(duong_dan_khoa_rieng)
+            
+            return render_template('index.html', 
+                                   message="✅ Da Ky File Thanh Cong (RSA Pure)!", 
+                                   message_type="success",
+                                   signature_file=os.path.basename(duong_dan_chu_ky))
+        except Exception as e:
+            return render_template('index.html', message=f"❌ Loi khi ky file: {str(e)}", message_type="error")
+
+@app.route('/kiem_tra', methods=['POST'])
+def route_kiem_tra():
+    if 'file' not in request.files or 'signature' not in request.files:
+         return render_template('index.html', message="❌ Thieu file goc hoac file chu ky", message_type="error")
+
+    file = request.files['file']
+    file_chu_ky = request.files['signature']
+
+    if file.filename == '' or file_chu_ky.filename == '':
+        return render_template('index.html', message="❌ Chua chon du file", message_type="error")
+
+    try:
+        duong_dan_file = os.path.join(UPLOAD_FOLDER, file.filename)
+        duong_dan_chu_ky = os.path.join(SIGN_FOLDER, file_chu_ky.filename)
+
+        file.save(duong_dan_file)
+        file_chu_ky.save(duong_dan_chu_ky)
+
+        if not os.path.exists(DUONG_DAN_KHOA_CONG_KHAI):
+             return render_template('index.html', message="❌ Khong tim thay Khoa Cong Khai!", message_type="error")
+
+        ket_qua = xu_ly_xac_thuc(duong_dan_file, duong_dan_chu_ky)
+
+        if ket_qua:
+            tin_nhan = "✅ TOAN VEN DU LIEU DUOC XAC NHAN: File Chuan Authentic."
+            kieu_tin_nhan = "success"
+        else:
+            tin_nhan = "❌ CANH BAO: File Da Bi Thay Doi Hoac Chu Ky Khong Hop Le."
+            kieu_tin_nhan = "error"
+            
+        return render_template('index.html', message=tin_nhan, message_type=kieu_tin_nhan)
+    except Exception as e:
+        return render_template('index.html', message=f"❌ Loi xac thuc: {str(e)}", message_type="error")
+
+@app.route('/tai_chu_ky/<filename>')
+def route_tai_chu_ky(filename):
+    return send_file(os.path.join(SIGN_FOLDER, filename), as_attachment=True)
+
+@app.route('/tai_khoa/<filename>')
+def route_tai_khoa(filename):
+    if filename not in [TEN_FILE_KHOA_BI_MAT, TEN_FILE_KHOA_CONG_KHAI]:
+        return "Tu choi truy cap", 403
+    return send_file(os.path.join(KEY_FOLDER, filename), as_attachment=True)
+
+if __name__ == '__main__':
+    app.run(debug=True)

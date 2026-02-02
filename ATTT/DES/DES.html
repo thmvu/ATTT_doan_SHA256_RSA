@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DES Encryption Demo</title>
+
+<!-- Link CSS -->
+<link rel="stylesheet" href="DES.css">
+
+<!-- CryptoJS DES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>DES Encryption Demo</h2>
+
+    <label>Plain Text / Cipher Text</label>
+    <textarea id="text" rows="4"></textarea>
+
+    <label>Key (8 characters)</label>
+    <input type="text" id="key" maxlength="8">
+
+    <div class="btn-box">
+        <button class="encrypt" onclick="encryptDES()">Encrypt</button>
+        <button class="decrypt" onclick="decryptDES()">Decrypt</button>
+    </div>
+
+    <div class="output" id="result"></div>
+</div>
+
+<!-- Link JS -->
+<script src="DES.js"></script>
+
+</body>
+</html>

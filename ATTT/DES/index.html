@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Substitution Cipher Demo</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    padding: 30px;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+h2 {
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    height: 90px;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.key-box {
+    background: #020617;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 10px;
+    white-space: pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🔐 Substitution Cipher (Mã hóa thay thế)</h2>
+
+<button onclick="generateKey()">Tạo Key Ngẫu Nhiên</button>
+
+<div class="key-box" id="keyDisplay">
+Chưa có key
+</div>
+
+<h3>Plain Text</h3>
+<textarea id="plainText"></textarea>
+
+<button onclick="encrypt()">Mã hóa</button>
+
+<h3>Cipher Text</h3>
+<textarea id="cipherText"></textarea>
+
+<button onclick="decrypt()">Giải mã</button>
+
+</div>
+
+<script>
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let keyMap = {};
+let reverseKeyMap = {};
+
+// Tạo key ngẫu nhiên
+function generateKey() {
+
+    let shuffled = alphabet.split('').sort(() => Math.random() - 0.5);
+
+    keyMap = {};
+    reverseKeyMap = {};
+
+    for (let i = 0; i < alphabet.length; i++) {
+        keyMap[alphabet[i]] = shuffled[i];
+        reverseKeyMap[shuffled[i]] = alphabet[i];
+    }
+
+    displayKey();
+}
+
+// Hiển thị key
+function displayKey() {
+
+    let text = "PLAINTEXT → CIPHERTEXT\n\n";
+
+    for (let letter in keyMap) {
+        text += letter + " → " + keyMap[letter] + "\n";
+    }
+
+    document.getElementById("keyDisplay").innerText = text;
+}
+
+// Mã hóa
+function encrypt() {
+
+    let input = document.getElementById("plainText").value.toUpperCase();
+    let result = "";
+
+    for (let char of input) {
+        if (keyMap[char]) {
+            result += keyMap[char];
+        } else {
+            result += char;
+        }
+    }
+
+    document.getElementById("cipherText").value = result;
+}
+
+// Giải mã
+function decrypt() {
+
+    let input = document.getElementById("cipherText").value.toUpperCase();
+    let result = "";
+
+    for (let char of input) {
+        if (reverseKeyMap[char]) {
+            result += reverseKeyMap[char];
+        } else {
+            result += char;
+        }
+    }
+
+    document.getElementById("plainText").value = result;
+}
+
+</script>
+
+</body>
+</html>
